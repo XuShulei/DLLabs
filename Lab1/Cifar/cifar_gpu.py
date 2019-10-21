@@ -93,6 +93,6 @@ ctx = [mx.gpu(i) for i in range(num_gpus)]
 # ctx = [mx.context.cpu()]
 epochs = 10
 est = build_estimator(ctx)
-est.fit(train_data_loader, val_data_loader, epochs=epochs, event_handlers=[checkpoint_handler])
+est.fit(train_data_loader, val_data_loader, epochs=epochs, event_handlers=[])
 
 print(loss_record_handler.loss_history)
