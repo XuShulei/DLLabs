@@ -1,3 +1,4 @@
+import sys
 import mxnet as mx
 import numpy as np
 import os, time, shutil
@@ -9,11 +10,15 @@ from mxnet.gluon.data.vision import transforms
 from gluoncv.utils import makedirs
 from gluoncv.model_zoo import get_model
 
-classes = 200
+if (len(sys.argv) < 3):
+    print('please input both model name and batch size')
+    sys.exit()
 
-epochs = 5
+classes = 23
+
+epochs = 10
 lr = 0.001
-per_device_batch_size = 64
+per_device_batch_size = int(sys.argv[2])
 momentum = 0.9
 wd = 0.0001
 
@@ -67,7 +72,7 @@ test_data = gluon.data.DataLoader(
     batch_size=batch_size, shuffle=False, num_workers = num_workers)
 
 # Model and Trainer
-model_name = 'ResNet50_v2'
+model_name = sys.argv[1]
 finetune_net = get_model(model_name, pretrained=True)
 with finetune_net.name_scope():
     finetune_net.output = nn.Dense(classes)

@@ -1,3 +1,4 @@
+import sys
 import mxnet as mx
 import numpy as np
 import os, time, shutil
@@ -9,11 +10,15 @@ from mxnet.gluon.data.vision import transforms
 from gluoncv.utils import makedirs
 from gluoncv.model_zoo import get_model
 
+if (len(sys.argv) < 3):
+    print('please input both model name and batch size')
+    sys.exit()
+
 classes = 23
 
-epochs = 5
+epochs = 40
 lr = 0.001
-per_device_batch_size = 64
+per_device_batch_size = int(sys.argv[2])
 momentum = 0.9
 wd = 0.0001
 
