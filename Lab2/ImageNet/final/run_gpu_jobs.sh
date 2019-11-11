@@ -7,6 +7,6 @@
 
 cd /users/PAS1588/srander/lab2/Lab2/ImageNet/final
 
-mpirun -np ${nodes} -ppn ${nodes} python common.py ${model_name} ${batch} ${gpu_enabled}
+mpirun -np ${nodes} -ppn ${ppn} python common.py ${model_name} ${batch} ${gpu_enabled} ${nodes} ${ppn}
 
 #python common.py ${model_name} ${batch} ${gpu_enabled}

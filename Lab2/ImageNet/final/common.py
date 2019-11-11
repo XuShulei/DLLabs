@@ -10,21 +10,30 @@ from mxnet.gluon import nn
 from mxnet.gluon.data.vision import transforms
 from gluoncv.utils import makedirs
 from gluoncv.model_zoo import get_model
+from gluoncv.data.sampler import SplitSampler
+import math
 
-if (len(sys.argv) < 4):
+import socket
+
+if (len(sys.argv) < 6):
     print('please input both model name and batch size')
     sys.exit()
 
 model_name = sys.argv[1]
 per_device_batch_size = int(sys.argv[2])
 is_gpu_enabled = sys.argv[3] == 'True'
+num_nodes = int(sys.argv[4])
+ppn = int(sys.argv[5])
 
 hvd.init()
 
 ctx = [mx.gpu(hvd.local_rank())] if is_gpu_enabled else [mx.cpu(hvd.local_rank())]
 
+print("----")
 print(ctx)
 print(is_gpu_enabled)
+print(socket.gethostname())
+print("----")
 
 classes = 23
 
@@ -71,9 +80,14 @@ train_path = os.path.join(path, 'train')
 val_path = os.path.join(path, 'val')
 test_path = os.path.join(path, 'test')
 
+train_data_size = 115
+
+train_data_per_process = math.floor(train_data_size / (num_nodes * ppn))
+
 train_data = gluon.data.DataLoader(
     gluon.data.vision.ImageFolderDataset(train_path).transform_first(transform_train),
-    batch_size=batch_size, shuffle=True, num_workers=num_workers)
+    batch_size=batch_size, shuffle=True, num_workers=num_workers,
+    sampler=SplitSampler(train_data_per_process, num_workers, hvd.rank()))
 
 val_data = gluon.data.DataLoader(
     gluon.data.vision.ImageFolderDataset(val_path).transform_first(transform_test),
