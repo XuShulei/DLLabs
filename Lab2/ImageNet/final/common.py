@@ -86,7 +86,7 @@ train_data_per_process = math.floor(train_data_size / (num_nodes * ppn))
 
 train_data = gluon.data.DataLoader(
     gluon.data.vision.ImageFolderDataset(train_path).transform_first(transform_train),
-    batch_size=batch_size, shuffle=True, num_workers=num_workers,
+    batch_size=batch_size, num_workers=num_workers,
     sampler=SplitSampler(train_data_per_process, num_workers, hvd.rank()))
 
 val_data = gluon.data.DataLoader(
