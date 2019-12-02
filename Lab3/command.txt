@@ -1,0 +1,5 @@
+sample command to get timeline
+mpirun -np 2 -npernode 1 -hostfile $PBS_NODEFILE -x HOROVOD_TIMELINE=$PWD/timeline.json python common.py "alexnet" 64 True 1 2
+
+# download the file, and drag or load the json file to following page:
+chrome://tracing
