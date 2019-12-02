@@ -1,0 +1,9 @@
+export HOROVOD_CUDA_HOME=/usr/local/cuda/10.0.130
+export HOROVOD_CUDA_INCLUDE=/usr/local/cuda/10.0.130/include
+export HOROVOD_CUDA_LIB=/usr/local/cuda/10.0.130/lib
+
+module load python/3.6-conda5.2
+module load cuda/10.0.130
+module load openmpi/4.0.2
+
+pip install --user --no-cache-dir horovod
